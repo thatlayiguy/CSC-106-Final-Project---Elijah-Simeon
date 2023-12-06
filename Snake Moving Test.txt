@@ -1,0 +1,110 @@
+var currentScreen = 1;
+var gameOver = false;
+var score = 0;
+
+
+//Snake Object
+var Snake = function(x,y, direction)
+{
+    this.x = x;
+    this.y = y;
+    this.direction = direction;
+    this.body = [];
+};
+
+//Fruit Object
+var Fruit = function(x,y)
+{
+    this.x = x;
+    this.y = y;
+};
+
+Snake.prototype.draw = function() 
+{
+    //snake
+    fill(58, 207, 107);
+    rect(this.x, this.y, 10,10);
+};
+
+Fruit.prototype.draw = function()
+{
+    fill(255, 0, 0);
+    ellipse(this.x, this.y, 20, 20);
+};
+
+//Creates new instances 
+var snake = new Snake(10,10,'right');
+var fruit = new Fruit(random(1,400),random(1,400));
+//var goldenFruit = new Fruit(random(1,400),random(1,400));
+
+//Main draw function
+var draw = function() {
+   
+   if(gameOver === false)
+   {
+    background(0, 0, 0);
+    fill(255, 255, 255);
+    text('Score: '+ score, 7, 389);
+    text('Body Amount: '+ snake.body.length, 63, 389);
+    text('Direction: '+ snake.direction, 160, 389)
+    ;
+    //Calls the snake and fruit instances
+    snake.draw();
+    fruit.draw();
+    //goldenFruit.draw();
+    
+    //Must have CAPS on
+    //D To move right
+     if (keyIsPressed && key.code === 68)
+    {
+        snake.x += 5;
+        snake.direction = 'right';
+    }
+    
+    //S to move down
+     else if (keyIsPressed && key.code === 65)
+    {
+        snake.x -= 5;
+        snake.direction = 'down';
+    }
+    
+    //A to move left
+      else if (keyIsPressed && key.code === 87)
+    {
+        snake.y -= 5;
+    }
+    
+    //W to move right
+      else if (keyIsPressed && key.code === 83)
+    {
+        snake.y += 5;
+    }
+    
+    //Checks if Snake head is touching Fruit
+    if(snake.x >= fruit.x && 
+        snake.x <= fruit.x+5 &&
+        snake.y >= fruit.y && 
+        snake.y <= fruit.y+5)
+        {
+            //Moves the fruit to a new location
+            fruit.x = random(1,400);
+            fruit.y = random(1,400);
+            
+            //Adds point
+            score += 1;
+            
+            //Adds a new body part to array
+            snake.body.push(1);
+        }
+   }
+   
+   
+   else if(gameOver === true)
+   {
+       //Currently DOES NOTHING
+       currentScreen = 2;
+   }
+    
+};
+
+
